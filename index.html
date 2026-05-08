@@ -21,22 +21,26 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* Lucide 아이콘 중앙 정렬 보정 */
         .lucide-icon { vertical-align: middle; display: inline-block; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
-    <div id="root"></div>
+    <div id="root">
+        <!-- 스크립트 로딩 전 표시될 내용 -->
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="text-center">
+                <div class="inline-block w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p class="text-slate-500 font-medium">안내 시스템을 불러오는 중입니다...</p>
+            </div>
+        </div>
+    </div>
 
-    <!-- type="text/babel"을 명시해야 브라우저가 React 문법을 해석합니다 -->
     <script type="text/babel">
-        // 브라우저 환경에서는 import 대신 전역 변수를 사용합니다
+        // 브라우저 환경 전용 설정 (import 사용 금지)
         const { useState, useEffect } = React;
 
-        // 아이콘 컴포넌트 (Lucide 아이콘을 React에서 렌더링하기 위함)
         const Icon = ({ name, size = 20, className = "" }) => {
             useEffect(() => {
-                // DOM 업데이트 후 아이콘 생성
                 if (window.lucide) {
                     window.lucide.createIcons();
                 }
@@ -60,7 +64,7 @@
                         '실험 봉사: 기자재 정리 및 실험 보조',
                         '행사 봉사: 수학·과학 행사 안내, 환경공감 독서쉼터 운영'
                     ],
-                    benefit: '봉사시간 인정 (생활기록부 기재 대상 제외)'
+                    benefit: '봉사시간 인정 (생활기록부 기재 제외)'
                 },
                 {
                     id: 'bridger',
@@ -137,7 +141,6 @@
 
             return (
                 <div className="min-h-screen pb-24 md:pb-0">
-                    {/* Header */}
                     <header className="bg-white border-b border-slate-200 sticky top-0 z-20 shadow-sm">
                         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
                             <div className="flex items-center gap-2">
@@ -151,7 +154,6 @@
                     </header>
 
                     <div className="max-w-5xl mx-auto px-4 py-6 md:flex md:gap-8">
-                        {/* Desktop Side Nav */}
                         <nav className="hidden md:block w-64 space-y-2">
                             <button 
                                 onClick={() => setActiveTab('dashboard')}
@@ -173,7 +175,6 @@
                             ))}
                         </nav>
 
-                        {/* Content */}
                         <main className="flex-1">
                             {activeTab === 'dashboard' ? (
                                 <div className="space-y-6">
@@ -185,7 +186,9 @@
                                                 학생 상담 및 생기부 기록 시 참고해 주세요.
                                             </p>
                                         </div>
-                                        <Icon name="sparkles" size={120} className="absolute -right-8 -bottom-8 text-white/10 rotate-12" />
+                                        <div className="absolute -right-8 -bottom-8 text-white/10 rotate-12">
+                                            <Icon name="sparkles" size={120} />
+                                        </div>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -280,8 +283,7 @@
                                                         <Icon name="alert-circle" className="text-blue-500 shrink-0" size={24} />
                                                         <div className="text-sm text-blue-800 leading-relaxed">
                                                             <p className="font-bold mb-1">안내사항</p>
-                                                            본 활동은 별도의 서술형 기재 없이 <strong>봉사활동 시간</strong>으로 기록됩니다. 
-                                                            나이스(NEIS) 봉사활동 내역을 확인해 주세요.
+                                                            본 활동은 별도의 서술형 기재 없이 <strong>봉사활동 시간</strong>으로 기록됩니다.
                                                         </div>
                                                     </div>
                                                 )}
@@ -293,7 +295,6 @@
                         </main>
                     </div>
 
-                    {/* Mobile Navigation */}
                     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-slate-200 px-4 py-3 flex justify-between items-center z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
                         <button onClick={() => setActiveTab('dashboard')} className={`flex flex-col items-center gap-1 min-w-[60px] ${activeTab === 'dashboard' ? 'text-blue-600' : 'text-slate-400'}`}>
                             <Icon name="home" size={20} />
